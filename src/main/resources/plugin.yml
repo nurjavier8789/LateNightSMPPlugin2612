@@ -1,0 +1,6 @@
+name: LateNightSMPPlugin2612
+version: '${version}'
+
+main: io.github.nurjavier8789.lateNightSMPPlugin2612.LateNightSMPPlugin2612
+api-version: '26.1.2'
+load: POSTWORLD
