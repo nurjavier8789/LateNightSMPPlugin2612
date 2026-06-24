@@ -5,13 +5,11 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.event.EventHandler;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 import net.kyori.adventure.text.Component;
-import org.bukkit.scheduler.BukkitRunnable;
-
-import java.net.URI;
 
 public final class LateNightSMPPlugin2612 extends JavaPlugin implements Listener {
 
@@ -20,6 +18,7 @@ public final class LateNightSMPPlugin2612 extends JavaPlugin implements Listener
         startUIUpdater();
 
         getServer().getPluginManager().registerEvents(this, this);
+        getServer().getPluginManager().registerEvents(new helpTabCompletion(), this);
         getLogger().info("Late Night SMP Plugin is active!");
     }
 
