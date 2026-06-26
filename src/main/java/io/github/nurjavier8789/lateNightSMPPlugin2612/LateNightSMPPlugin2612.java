@@ -1,24 +1,41 @@
 package io.github.nurjavier8789.lateNightSMPPlugin2612;
 
+import io.github.nurjavier8789.lateNightSMPPlugin2612.commandList.ShopCommand;
+
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.event.EventHandler;
+import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
+import net.milkbowl.vault.economy.Economy;
 import net.kyori.adventure.text.Component;
 
+import java.util.Objects;
+
 public final class LateNightSMPPlugin2612 extends JavaPlugin implements Listener {
+    public static Economy econ = null;
 
     @Override
     public void onEnable() {
+        if (!setupEconomy() ) {
+            getLogger().severe("Vault tidak ditemukan! Pastikan Vault terinstall untuk mencegah plugin rusak!");
+            getServer().getPluginManager().disablePlugin(this);
+            return;
+        }
+
         startUIUpdater();
 
+        getServer().getPluginManager().registerEvents(new ShopClickListener(), this);
         getServer().getPluginManager().registerEvents(this, this);
         getServer().getPluginManager().registerEvents(new helpTabCompletion(), this);
+
+        Objects.requireNonNull(getCommand("shop")).setExecutor(new ShopCommand());
+
         getLogger().info("Late Night SMP Plugin is active!");
     }
 
@@ -40,6 +57,18 @@ public final class LateNightSMPPlugin2612 extends JavaPlugin implements Listener
         }, 20L);
     }
 
+    private boolean setupEconomy() {
+        if (getServer().getPluginManager().getPlugin("Vault") == null) {
+            return false;
+        }
+        RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
+        if (rsp == null) {
+            return false;
+        }
+        econ = rsp.getProvider();
+        return true;
+    }
+
     private void startUIUpdater() {
         new BukkitRunnable() {
             @Override
@@ -58,8 +87,19 @@ public final class LateNightSMPPlugin2612 extends JavaPlugin implements Listener
         if (ping > 150 && ping <= 300) pingColor = "§e";
         else if (ping > 300) pingColor = "§c";
 
-        Component header = Component.text("\n§b §lLate Night SMP§b\n    §7Selamat datang, §e" + player.getName() + "    \n");
-        Component footer = Component.text("\n§7Ping: " + pingColor + ping + "ms\n" + "§bHave fun playing!\n");
+        double rawTps = Bukkit.getTPS()[0];
+        double tps = Math.min(20.0, rawTps);
+        String tpsWarna = "§a";
+        if (tps < 18.0) {
+            tpsWarna = "§e";
+        }
+        if (tps < 15.0) {
+            tpsWarna = "§c";
+        }
+        String tpsFormatted = String.format(java.util.Locale.US, "%.2f", tps);
+
+        Component header = Component.text("\n§b §lLate Night SMP Indonesia§b\n    §7Selamat datang, §e" + player.getName() + "    \n");
+        Component footer = Component.text("\n§7Ping: " + pingColor + ping + "ms §8| §7TPS: " + tpsWarna + tpsFormatted + "\n" + "§bHave fun playing!\n");
 
         player.sendPlayerListHeaderAndFooter(header, footer);
     }
