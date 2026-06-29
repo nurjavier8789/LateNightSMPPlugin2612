@@ -1,21 +1,26 @@
 package io.github.nurjavier8789.lateNightSMPPlugin2612.customGUI;
 
-import io.github.nurjavier8789.lateNightSMPPlugin2612.dataSaver.shopDatabase;
 import io.github.nurjavier8789.lateNightSMPPlugin2612.model.shopModels;
+import io.github.nurjavier8789.lateNightSMPPlugin2612.dataSaver.shopDatabase;
 
-import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemRarity;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import net.kyori.adventure.text.Component;
+
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class CustomGUIShop {
+    private final DecimalFormat formatter = new DecimalFormat("#,###");
+
     public ItemStack borderShop() {
         ItemStack item = new ItemStack(Material.BLACK_STAINED_GLASS_PANE);
         ItemMeta meta = item.getItemMeta();
@@ -26,6 +31,18 @@ public class CustomGUIShop {
 
             item.setItemMeta(meta);
         }
+
+        return item;
+    }
+
+    public ItemStack arrowControl(String text) {
+        ItemStack item = new ItemStack(Material.ARROW);
+        ItemMeta meta = item.getItemMeta();
+
+        meta.itemName(Component.text(text));
+        meta.setRarity(ItemRarity.UNCOMMON);
+
+        item.setItemMeta(meta);
 
         return item;
     }
@@ -43,15 +60,13 @@ public class CustomGUIShop {
     }
 
     private ItemStack initItemShop(Material theItem, int hargaBeli, int hargaJual) {
-        shopDatabase shopdatabase = new shopDatabase();
-
         ItemStack item = new ItemStack(theItem, 1);
         ItemMeta meta = item.getItemMeta();
 
         List<Component> lore = new ArrayList<>();
         lore.add(Component.text(""));
-        lore.add(Component.text("§fHarga Beli: §cRp" + hargaBeli));
-        lore.add(Component.text("§fHarga Jual: §aRp" + hargaJual));
+        lore.add(Component.text("§fHarga Beli: §cRp" + formatter.format(hargaBeli)));
+        lore.add(Component.text("§fHarga Jual: §aRp" + formatter.format(hargaJual)));
         lore.add(Component.text(""));
         lore.add(Component.text("§e[Klik Kiri] §7untuk membeli!"));
         lore.add(Component.text("§e[Shift + Klik Kiri] §7untuk membeli banyak!"));
@@ -60,9 +75,6 @@ public class CustomGUIShop {
         meta.lore(lore);
 
         item.setItemMeta(meta);
-
-        shopdatabase.putItemOnShop(theItem, hargaBeli, hargaJual);
-
         return item;
     }
 
@@ -102,40 +114,58 @@ public class CustomGUIShop {
         // Item List
         shopGui.setItem(10, initItemShop(Material.IRON_INGOT, 5000, 2500));
         shopGui.setItem(11, initItemShop(Material.COPPER_INGOT, 10000, 5000));
-        shopGui.setItem(12, initItemShop(Material.GOLD_INGOT, 30000, 15000));
+        shopGui.setItem(12, initItemShop(Material.GOLD_INGOT, 75000, 50000));
         shopGui.setItem(13, initItemShop(Material.DIAMOND, 50000, 25000));
-        shopGui.setItem(14, initItemShop(Material.NETHERITE_INGOT, 1000000, 450000));
+        shopGui.setItem(14, initItemShop(Material.NETHERITE_SCRAP, 1000000, 450000));
 
         player.openInventory(shopGui);
     }
 
     public void bulkBuyShopGUI(Player player, shopModels item) {
-        Inventory newGUI = Bukkit.createInventory(player, 54, Component.text("§8Beli Banyak: " + item.getMaterial().name()));
+        Inventory newGUI = Bukkit.createInventory(player, 54, Component.text("§8Beli Banyak: " + item.convertItemName()));
 
-        newGUI.setItem(10, listBulkItem(item.getMaterial(), 8, 5000 * 8));
-        newGUI.setItem(12, listBulkItem(item.getMaterial(), 16, 5000 * 16));
-        newGUI.setItem(14, listBulkItem(item.getMaterial(), 32, 5000 * 32));
-        newGUI.setItem(16, listBulkItem(item.getMaterial(), 64, 5000 * 64));
+        // Items List
+        newGUI.setItem(19, listBulkItem(item.getMaterial(), 8, item.getHargaBeli() * 8, "buy"));
+        newGUI.setItem(21, listBulkItem(item.getMaterial(), 16, item.getHargaBeli() * 16, "buy"));
+        newGUI.setItem(23, listBulkItem(item.getMaterial(), 32, item.getHargaBeli() * 32, "buy"));
+        newGUI.setItem(25, listBulkItem(item.getMaterial(), 64, item.getHargaBeli() * 64, "buy"));
+
+        // Control Page
+        newGUI.setItem(53, closeButton());
+        newGUI.setItem(45, arrowControl("Kembali"));
+
+        // Filler
+        ItemStack fillerSlot = borderShop();
+        for (int i = 0; i < newGUI.getSize(); i++) {
+            if (newGUI.getItem(i) == null) {
+                newGUI.setItem(i, fillerSlot);
+            }
+        }
 
         player.openInventory(newGUI);
     }
 
-    private ItemStack listBulkItem(Material mat, int jumlah, double totalHarga) {
+    private ItemStack listBulkItem(Material mat, int jumlah, double totalHarga, String isSellOrBuy) {
         ItemStack item = new ItemStack(mat, jumlah);
         ItemMeta meta = item.getItemMeta();
 
         List<Component> lore = new ArrayList<>();
-        lore.add(Component.text("Beli " + jumlah + "x"));
-        lore.add(Component.text(""));
-        lore.add(Component.text("§fTotal Harga: §cRp " + totalHarga));
-        lore.add(Component.text("§eKlik untuk membeli!"));
+        if (Objects.equals(isSellOrBuy, "buy")) {
+            lore.add(Component.text(""));
+            lore.add(Component.text("§fTotal Harga: §cRp " + formatter.format(totalHarga)));
+            lore.add(Component.text("§eKlik untuk membeli!"));
+        } else {
+            lore.add(Component.text(""));
+            lore.add(Component.text("§fTotal Harga: §aRp " + formatter.format(totalHarga)));
+            lore.add(Component.text("§eKlik untuk menjual!"));
+        }
         meta.lore(lore);
 
         item.setItemMeta(meta);
         return item;
     }
 
-    public void proccessSellAllSpecificItem(Player player, Material material, double hargaJualSatuan) {
+    public void proccessSellAllSpecificItem(Player player, Material material, double hargaJualSatuan, shopModels items) {
         int itemInInventory = 0;
 
         for (ItemStack item : player.getInventory().getContents()) {
@@ -151,13 +181,14 @@ public class CustomGUIShop {
 
         double totalSellPrice = itemInInventory * hargaJualSatuan;
 
-        Inventory guiJual = Bukkit.createInventory(player, 54, Component.text("§8Konfirmasi Jual: " + material.name()));
+        Inventory guiJual = Bukkit.createInventory(player, 54, Component.text("§8Konfirmasi Jual: " + items.convertItemName()));
 
         ItemStack jualSemua = new ItemStack(Material.EMERALD_BLOCK);
         ItemMeta metaSemua = jualSemua.getItemMeta();
         metaSemua.displayName(Component.text("§a§lJUAL SEMUA " + itemInInventory + " Item"));
 
         List<Component> loreSemua = new ArrayList<>();
+        loreSemua.add(Component.text(""));
         loreSemua.add(Component.text("§fTotal Didapat: §a+Rp " + totalSellPrice));
         loreSemua.add(Component.text("§7Ini akan mengosongkan"));
         loreSemua.add(Component.text("§7semua item tersebut dari tasmu."));
@@ -174,8 +205,26 @@ public class CustomGUIShop {
         metaCustom.lore(loreCustom);
         jualCustom.setItemMeta(metaCustom);
 
-        guiJual.setItem(11, jualSemua);
-        guiJual.setItem(15, jualCustom);
+//        guiJual.setItem(30, jualSemua);
+//        guiJual.setItem(32, jualCustom);
+
+        // Items List
+        guiJual.setItem(10, listBulkItem(items.getMaterial(), 8, items.getHargaJual() * 8, "sell"));
+        guiJual.setItem(12, listBulkItem(items.getMaterial(), 16, items.getHargaJual() * 16, "sell"));`
+        guiJual.setItem(14, listBulkItem(items.getMaterial(), 32, items.getHargaJual() * 32, "sell"));
+        guiJual.setItem(16, listBulkItem(items.getMaterial(), 64, items.getHargaJual() * 64, "sell"));
+
+        // Control Page
+        guiJual.setItem(53, closeButton());
+        guiJual.setItem(45, arrowControl("Kembali"));
+
+        // Filler
+        ItemStack fillerSlot = borderShop();
+        for (int i = 0; i < guiJual.getSize(); i++) {
+            if (guiJual.getItem(i) == null) {
+                guiJual.setItem(i, fillerSlot);
+            }
+        }
 
         player.openInventory(guiJual);
     }

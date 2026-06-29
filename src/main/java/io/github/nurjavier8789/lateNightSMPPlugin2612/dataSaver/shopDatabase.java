@@ -13,9 +13,9 @@ public class shopDatabase {
     public shopDatabase() {
         daftarBarang.put(Material.IRON_INGOT, new shopModels(Material.IRON_INGOT, 5000, 2500));
         daftarBarang.put(Material.COPPER_INGOT, new shopModels(Material.COPPER_INGOT, 10000, 5000));
-        daftarBarang.put(Material.GOLD_INGOT, new shopModels(Material.GOLD_INGOT, 30000, 15000));
+        daftarBarang.put(Material.GOLD_INGOT, new shopModels(Material.GOLD_INGOT, 75000, 50000));
         daftarBarang.put(Material.DIAMOND, new shopModels(Material.DIAMOND, 50000, 25000));
-        daftarBarang.put(Material.NETHERITE_INGOT, new shopModels(Material.NETHERITE_INGOT, 1000000, 450000));
+        daftarBarang.put(Material.NETHERITE_SCRAP, new shopModels(Material.NETHERITE_SCRAP, 1000000, 450000));
     }
 
     public boolean alreadyExist(Material material) {
@@ -24,11 +24,5 @@ public class shopDatabase {
 
     public shopModels getItemForShop(Material material) {
         return daftarBarang.get(material);
-    }
-
-    public void putItemOnShop(Material material, double hargaBeli, double hargaJual) {
-        if (!alreadyExist(material)) {
-            daftarBarang.put(material, new shopModels(material, hargaBeli, hargaJual));
-        }
     }
 }

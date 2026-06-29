@@ -24,4 +24,19 @@ public class shopModels {
     public double getHargaJual() {
         return hargaJual;
     }
+
+    public String convertItemName() {
+        String realName = material.name();
+
+        String[] words = realName.split("_");
+        StringBuilder finalName = new StringBuilder();
+
+        for (String word : words) {
+            finalName.append(word.substring(0, 1).toUpperCase())
+                    .append(word.substring(1).toLowerCase())
+                    .append(" ");
+        }
+
+        return finalName.toString().trim();
+    }
 }
