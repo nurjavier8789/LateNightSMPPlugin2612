@@ -210,7 +210,7 @@ public class CustomGUIShop {
 
         // Items List
         guiJual.setItem(10, listBulkItem(items.getMaterial(), 8, items.getHargaJual() * 8, "sell"));
-        guiJual.setItem(12, listBulkItem(items.getMaterial(), 16, items.getHargaJual() * 16, "sell"));`
+        guiJual.setItem(12, listBulkItem(items.getMaterial(), 16, items.getHargaJual() * 16, "sell"));
         guiJual.setItem(14, listBulkItem(items.getMaterial(), 32, items.getHargaJual() * 32, "sell"));
         guiJual.setItem(16, listBulkItem(items.getMaterial(), 64, items.getHargaJual() * 64, "sell"));
 
