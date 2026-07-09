@@ -1,7 +1,5 @@
 package io.github.nurjavier8789.lateNightSMPPlugin2612;
 
-import io.github.nurjavier8789.lateNightSMPPlugin2612.commandList.ShopCommand;
-
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
@@ -14,8 +12,6 @@ import org.bukkit.event.player.PlayerQuitEvent;
 
 import net.milkbowl.vault.economy.Economy;
 import net.kyori.adventure.text.Component;
-
-import java.util.Objects;
 
 public final class LateNightSMPPlugin2612 extends JavaPlugin implements Listener {
     public static Economy econ = null;
@@ -30,11 +26,8 @@ public final class LateNightSMPPlugin2612 extends JavaPlugin implements Listener
 
         startUIUpdater();
 
-        getServer().getPluginManager().registerEvents(new ShopClickListener(), this);
         getServer().getPluginManager().registerEvents(this, this);
         getServer().getPluginManager().registerEvents(new helpTabCompletion(), this);
-
-        Objects.requireNonNull(getCommand("shop")).setExecutor(new ShopCommand());
 
         getLogger().info("Late Night SMP Plugin is active!");
     }
