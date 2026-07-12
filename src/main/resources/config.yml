@@ -1,0 +1,17 @@
+# Welcome to Late Night SMP Plugin Config!
+# Here you can do a lot of config!
+
+monthly-event:
+  counter:
+    track-counter: "statistic_jump"
+    leaderboard-display: "Jumping"
+
+  event:
+    display-event: "Waiting..."
+
+  features:
+    elytra:
+      is-ban: true
+      message: "&cSorry no elytra uses in this server :("
+
+# END
