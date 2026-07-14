@@ -17,11 +17,15 @@ public class LeaderboardCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-        if (!(sender instanceof Player)) return true;
-        Player player = (Player) sender;
-
         String target = plugin.getConfig().getString("monthly-event.counter.track-counter");
         String displayText = plugin.getConfig().getString("monthly-event.counter.leaderboard-display");
+
+        if (!(sender instanceof Player)) {
+            sender.sendMessage("§7[§bLate Night SMP Plugin§7] §eSorry, this command only for player i guess...");
+
+            return true;
+        };
+        Player player = (Player) sender;
 
         player.sendMessage("");
         player.sendMessage("§e=== §lMonthly Tracking §e===");

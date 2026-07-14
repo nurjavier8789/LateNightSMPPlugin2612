@@ -5,19 +5,12 @@ import java.net.URI;
 import org.bukkit.ServerLinks;
 import org.bukkit.event.Listener;
 import org.bukkit.event.EventHandler;
-import org.bukkit.plugin.java.JavaPlugin;
 
 import net.kyori.adventure.text.Component;
 
 import org.bukkit.event.player.PlayerLinksSendEvent;
 
 public class ServerLinksListener implements Listener {
-    private final JavaPlugin plugin;
-
-    public ServerLinksListener(JavaPlugin plugin) {
-        this.plugin = plugin;
-    }
-
     @EventHandler
     public void sendServerLink(PlayerLinksSendEvent event) {
         ServerLinks links = event.getLinks();

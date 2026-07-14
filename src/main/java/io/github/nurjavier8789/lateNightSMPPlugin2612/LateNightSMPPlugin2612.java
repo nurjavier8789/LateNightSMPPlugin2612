@@ -33,11 +33,11 @@ public final class LateNightSMPPlugin2612 extends JavaPlugin implements Listener
         
         startUIUpdater();
         
+        getServer().getPluginManager().registerEvents(new ServerLinksListener(), this);
         getServer().getPluginManager().registerEvents(this, this);
         getServer().getPluginManager().registerEvents(new helpTabCompletion(), this);
         getServer().getPluginManager().registerEvents(new ElytraListener(this), this);
-        getServer().getPluginManager().registerEvents(new ServerLinksListener(this), this);
-        getServer().getPluginManager().registerEvents(new FirstJoinListener(this), this);
+        getServer().getPluginManager().registerEvents(new FirstJoinListener(), this);
 
         getLogger().info("Late Night SMP Plugin is active!");
     }
@@ -53,7 +53,8 @@ public final class LateNightSMPPlugin2612 extends JavaPlugin implements Listener
                 player.sendMessage("");
                 player.sendMessage("§b=======================================");
                 player.sendMessage("§eSelamat datang di Late Night SMP, §a" + player.getName() + "§e!");
-                player.sendMessage("§eTracking saat ini: §f" + getConfig().getString("monthly-event.counter.leaderboard-display"));
+                player.sendMessage("§eGunakan §b/lnsmpp §euntuk command resmi server!");
+                player.sendMessage("§6Tracking saat ini: §f" + getConfig().getString("monthly-event.counter.leaderboard-display"));
                 player.sendMessage("§eSelamat bermain!");
                 player.sendMessage("§b=======================================");
                 player.sendMessage("");
@@ -87,7 +88,7 @@ public final class LateNightSMPPlugin2612 extends JavaPlugin implements Listener
 
     private void updateTabList(Player player) {
         String currentTrackingText = getConfig().getString("monthly-event.counter.leaderboard-display");
-        String currentEvent = getConfig().getString("monthly-event.counter.leaderboard-display");
+        // String currentEvent = getConfig().getString("monthly-event.counter.leaderboard-display");
 
         int ping = player.getPing();
         String pingColor = "§a";

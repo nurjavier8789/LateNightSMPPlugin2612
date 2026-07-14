@@ -12,17 +12,18 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.command.CommandExecutor;
 
 public class _MainCommand implements CommandExecutor, TabCompleter {
-    private final JavaPlugin plugin;
-
     private final ReloadPlugin reloadPlugin;
     private final LeaderboardCommand leaderboardCommand;
     private final ToggleSBCommand toggleSBCommand;
+    private final HelpListCommand helpListCommand;
+    private final ServerRestartCommand serverRestartCommand;
 
     public _MainCommand(JavaPlugin plugin) {
-        this.plugin = plugin;
         this.reloadPlugin = new ReloadPlugin(plugin);
         this.leaderboardCommand = new LeaderboardCommand(plugin);
         this.toggleSBCommand = new ToggleSBCommand();
+        this.helpListCommand = new HelpListCommand();
+        this.serverRestartCommand = new ServerRestartCommand(plugin);
     }
 
     @Override
@@ -31,6 +32,7 @@ public class _MainCommand implements CommandExecutor, TabCompleter {
             sender.sendMessage("§eHello and welcome to §bLate Night SMP Indonesia Season 3§e!");
             sender.sendMessage("§eHope you guys enjoy!");
             sender.sendMessage("\n§eNeed anything? just ask player in here or on discord!");
+            sender.sendMessage("§eWe have another command too! Check §b/lnsmpp help §efor more info!\n");
             return true;
         }
 
@@ -40,9 +42,13 @@ public class _MainCommand implements CommandExecutor, TabCompleter {
             return leaderboardCommand.onCommand(sender, cmd, label, args);
         } else if (args[0].equalsIgnoreCase("sbtoggle")) {
             return toggleSBCommand.onCommand(sender, cmd, label, args);
+        } else if (args[0].equalsIgnoreCase("help")) {
+            return helpListCommand.onCommand(sender, cmd, label, args);
+        } else if (args[0].equalsIgnoreCase("restartserver")) {
+            return serverRestartCommand.onCommand(sender, cmd, label, args);
         }
 
-        sender.sendMessage("§cUh-oh. I can't find the command that you sent! (。_。)");
+        sender.sendMessage("§7[§bLate Night SMP Plugin§7] §cUh-oh. I can't find the command that you sent! (。_。)");
         return true;
     }
 
@@ -54,13 +60,27 @@ public class _MainCommand implements CommandExecutor, TabCompleter {
         if (args.length == 1) {
             if (sender.hasPermission("latenightsmpplugin.admin")) {
                 saran.add("reload");
+                saran.add("restartserver");
             }
+            saran.add("help");
             saran.add("leaderboard");
             saran.add("sbtoggle");
 
             StringUtil.copyPartialMatches(args[0], saran, hasilAkhir);
-            
             Collections.sort(hasilAkhir);
+
+            return hasilAkhir;
+        } else if (args.length == 2) {
+            if (args[0].equalsIgnoreCase("restartserver") && sender.hasPermission("latenightsmpplugin.admin.restartserver")) {
+                saran.add("cancel");
+                saran.add("30");
+                saran.add("60");
+                saran.add("120");
+            }
+
+            StringUtil.copyPartialMatches(args[1], saran, hasilAkhir);
+            Collections.sort(hasilAkhir);
+            
             return hasilAkhir;
         }
 

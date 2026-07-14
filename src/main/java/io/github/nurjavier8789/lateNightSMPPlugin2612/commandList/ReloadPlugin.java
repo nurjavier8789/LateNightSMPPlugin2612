@@ -14,14 +14,14 @@ public class ReloadPlugin implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-        if (!sender.hasPermission("latenightsmpplugin.reload")) {
-            sender.sendMessage("§cYou can't access this command! It's a no no!");
+        if (!sender.hasPermission("latenightsmpplugin.admin.reload")) {
+            sender.sendMessage("§7[§bLate Night SMP Plugin§7] §cYou can't access this command! It's a no no!");
             return true;
         }
 
         plugin.reloadConfig();
         
-        sender.sendMessage("§a[Late Night SMP Plugin] Plugin reloaded!");
+        sender.sendMessage("§7[§bLate Night SMP Plugin§7] §aPlugin reloaded!");
         
         return true;
     }
