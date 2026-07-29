@@ -1,3 +1,7 @@
-# LateNightSMPPlugin2612
+# Late Night SMP Plugin (26.1.2)
 
-I made this plugin for my own SMP!
+I made this plugin for my own SMP!\
+Late Night SMP Indonesia Season 3
+
+-----
+**Dependencies**: Vault and [PlaceholderAPI](https://modrinth.com/plugin/placeholderapi)
