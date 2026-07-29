@@ -6,12 +6,24 @@ monthly-event:
     track-counter: "statistic_jump"
     leaderboard-display: "Jumping"
 
-  event:
-    display-event: "Waiting..."
+event:
+  event-running: false
+  is-community-goal: false
 
-  features:
-    elytra:
-      is-ban: true
-      message: "&cSorry no elytra uses in this server :("
+  event-name: "Coming soon..."
+  event-details: ""
+  # Event Type: EFFECT,
+  event-type: "EFFECT"
+  # Depending on event-type
+  # EFFECT: moon-gravity, fortune-drop
+  impact: ""
+  duration: 300 # In seconds
+
+  # If is-community-goal: true
+
+features:
+  elytra:
+    is-ban: true
+    message: "&cSorry no elytra uses in this server :("
 
 # END

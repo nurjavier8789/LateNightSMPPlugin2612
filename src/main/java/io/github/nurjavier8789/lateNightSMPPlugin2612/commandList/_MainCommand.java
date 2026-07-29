@@ -17,6 +17,7 @@ public class _MainCommand implements CommandExecutor, TabCompleter {
     private final ToggleSBCommand toggleSBCommand;
     private final HelpListCommand helpListCommand;
     private final ServerRestartCommand serverRestartCommand;
+    private final EventCommand eventCommand;
 
     public _MainCommand(JavaPlugin plugin) {
         this.reloadPlugin = new ReloadPlugin(plugin);
@@ -24,6 +25,7 @@ public class _MainCommand implements CommandExecutor, TabCompleter {
         this.toggleSBCommand = new ToggleSBCommand();
         this.helpListCommand = new HelpListCommand();
         this.serverRestartCommand = new ServerRestartCommand(plugin);
+        this.eventCommand = new EventCommand(plugin);
     }
 
     @Override
@@ -46,6 +48,8 @@ public class _MainCommand implements CommandExecutor, TabCompleter {
             return helpListCommand.onCommand(sender, cmd, label, args);
         } else if (args[0].equalsIgnoreCase("restartserver")) {
             return serverRestartCommand.onCommand(sender, cmd, label, args);
+        } else if (args[0].equalsIgnoreCase("event")) {
+            return eventCommand.onCommand(sender, cmd, label, args);
         }
 
         sender.sendMessage("§7[§bLate Night SMP Plugin§7] §cUh-oh. I can't find the command that you sent! (。_。)");
@@ -65,6 +69,7 @@ public class _MainCommand implements CommandExecutor, TabCompleter {
             saran.add("help");
             saran.add("leaderboard");
             saran.add("sbtoggle");
+            saran.add("event");
 
             StringUtil.copyPartialMatches(args[0], saran, hasilAkhir);
             Collections.sort(hasilAkhir);
@@ -76,6 +81,11 @@ public class _MainCommand implements CommandExecutor, TabCompleter {
                 saran.add("30");
                 saran.add("60");
                 saran.add("120");
+            }
+
+            if (args[0].equalsIgnoreCase("event") && sender.hasPermission("latenightsmpplugin.admin.event")) {
+                saran.add("start");
+                saran.add("stop");
             }
 
             StringUtil.copyPartialMatches(args[1], saran, hasilAkhir);

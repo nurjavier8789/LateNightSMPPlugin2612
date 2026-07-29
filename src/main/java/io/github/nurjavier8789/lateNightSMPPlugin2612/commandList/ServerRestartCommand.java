@@ -52,6 +52,7 @@ public class ServerRestartCommand implements CommandExecutor {
             
             for (Player player : Bukkit.getOnlinePlayers()) {
                 player.clearTitle();
+                player.playSound(player.getLocation(), org.bukkit.Sound.BLOCK_ANVIL_LAND, 10, 0);
             }
             
             return true;
@@ -89,23 +90,41 @@ public class ServerRestartCommand implements CommandExecutor {
                     return;
                 }
 
-                if (detik % 10 == 0 || detik <= 5) {
+                boolean ingatkan = false;
+
+                if (detik % 300 == 0) {
+                    ingatkan = true;
+                } else if (detik % 60 == 0) {
+                    ingatkan = true;
+                } else if (detik == 30 || detik == 10 || detik <= 5) {
+                    ingatkan = true;
+                }
+
+                if (ingatkan) {
+                    String waktuTeks;
+                    if (detik >= 60) {
+                        waktuTeks = (detik / 60) + " menit";
+                    } else {
+                        waktuTeks = detik + " detik";
+                    }
+
                     if (detik >= 5) {
-                        Bukkit.broadcast(Component.text("§c§l[!] §fServer akan direstart dalam §e" + detik + " detik§f!\nPastikan selasaikan urusan kalian dan simpan progress kalian!"));
+                        Bukkit.broadcast(Component.text("§c§l[!] §fServer akan direstart dalam §e" + waktuTeks + "§f!\nPastikan selesaikan urusan kalian dan simpan progress kalian!"));
                     }
                     
                     Component title = Component.text("RESTART").color(NamedTextColor.RED).decorate(TextDecoration.BOLD);
-                    Component subtitle = Component.text("Dalam " + detik + " detik").color(NamedTextColor.WHITE);
+                    Component subtitle = Component.text("Dalam " + waktuTeks).color(NamedTextColor.WHITE);
 
                     Title.Times durasi = Title.Times.times(Duration.ofMillis(250), Duration.ofSeconds(1), Duration.ofMillis(250));
-
                     Title titleRestart = Title.title(title, subtitle, durasi);
 
                     for (Player player : Bukkit.getOnlinePlayers()) {
                         player.showTitle(titleRestart);
+                        
+                        float pitch = (detik <= 5) ? 2.0f : 1.0f;
+                        player.playSound(player.getLocation(), org.bukkit.Sound.UI_BUTTON_CLICK, 1, pitch);
                     }
                 }
-
                 detik--;
             }
         }.runTaskTimer(plugin, 0L, 20L);
