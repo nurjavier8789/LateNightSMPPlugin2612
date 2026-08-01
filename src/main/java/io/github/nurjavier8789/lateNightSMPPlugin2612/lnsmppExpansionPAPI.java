@@ -44,6 +44,7 @@ public class lnsmppExpansionPAPI extends PlaceholderExpansion {
             return plugin.getConfig().getString("event.event-name");
         }
         
+        
         if (params.equalsIgnoreCase("event_duration")) {
             return EventCommand.countdownText;
         }
@@ -51,6 +52,10 @@ public class lnsmppExpansionPAPI extends PlaceholderExpansion {
         // Tracker
         if (params.equalsIgnoreCase("monthly_tracker_name")) {
             return plugin.getConfig().getString("monthly-event.counter.leaderboard-display");
+        }
+
+        if (params.equalsIgnoreCase("monthly_tracker_track_counter")) {
+            return plugin.getConfig().getString("monthly-event.counter.track-counter");
         }
 
         return null;

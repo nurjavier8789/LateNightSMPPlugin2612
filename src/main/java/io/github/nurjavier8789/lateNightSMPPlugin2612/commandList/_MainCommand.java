@@ -17,7 +17,8 @@ public class _MainCommand implements CommandExecutor, TabCompleter {
     private final ToggleSBCommand toggleSBCommand;
     private final HelpListCommand helpListCommand;
     private final ServerRestartCommand serverRestartCommand;
-    private final EventCommand eventCommand;
+    private final EventCommand eventCommand; 
+    private final CustomEnchantCommand customEnchantCommand; 
 
     public _MainCommand(JavaPlugin plugin) {
         this.reloadPlugin = new ReloadPlugin(plugin);
@@ -26,6 +27,7 @@ public class _MainCommand implements CommandExecutor, TabCompleter {
         this.helpListCommand = new HelpListCommand();
         this.serverRestartCommand = new ServerRestartCommand(plugin);
         this.eventCommand = new EventCommand(plugin);
+        this.customEnchantCommand = new CustomEnchantCommand();
     }
 
     @Override
@@ -50,6 +52,8 @@ public class _MainCommand implements CommandExecutor, TabCompleter {
             return serverRestartCommand.onCommand(sender, cmd, label, args);
         } else if (args[0].equalsIgnoreCase("event")) {
             return eventCommand.onCommand(sender, cmd, label, args);
+        } else if (args[0].equalsIgnoreCase("customenchant")) {
+            return customEnchantCommand.onCommand(sender, cmd, label, args);
         }
 
         sender.sendMessage("§7[§bLate Night SMP Plugin§7] §cUh-oh. I can't find the command that you sent! (。_。)");
@@ -65,6 +69,7 @@ public class _MainCommand implements CommandExecutor, TabCompleter {
             if (sender.hasPermission("latenightsmpplugin.admin")) {
                 saran.add("reload");
                 saran.add("restartserver");
+                saran.add("customenchant");
             }
             saran.add("help");
             saran.add("leaderboard");
@@ -86,6 +91,10 @@ public class _MainCommand implements CommandExecutor, TabCompleter {
             if (args[0].equalsIgnoreCase("event") && sender.hasPermission("latenightsmpplugin.admin.event")) {
                 saran.add("start");
                 saran.add("stop");
+            }
+
+            if (args[0].equalsIgnoreCase("customenchant") && sender.hasPermission("latenightsmpplugin.admin.customenchant")) {
+                saran.add("smelting_touch");
             }
 
             StringUtil.copyPartialMatches(args[1], saran, hasilAkhir);

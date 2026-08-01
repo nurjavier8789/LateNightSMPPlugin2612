@@ -20,18 +20,15 @@ public class LeaderboardCommand implements CommandExecutor {
         String target = plugin.getConfig().getString("monthly-event.counter.track-counter");
         String displayText = plugin.getConfig().getString("monthly-event.counter.leaderboard-display");
 
-        if (!(sender instanceof Player)) {
-            sender.sendMessage("§7[§bLate Night SMP Plugin§7] §eSorry, this command only for player i guess...");
+        Player player = null;
+        if (sender instanceof Player) {
+            player = (Player) sender;
+        }
 
-            return true;
-        };
-        Player player = (Player) sender;
-
-        player.sendMessage("");
-        player.sendMessage("§e=== §lMonthly Tracking §e===");
-        player.sendMessage("§eCurrently tracking: §r" + displayText);
+        sender.sendMessage("§e=== §lMonthly Tracking §e===");
+        sender.sendMessage("§eCurrently tracking: §r" + displayText);
         
-        for (int i = 1; i <= 5; i++) {
+        for (int i = 1; i <= 8; i++) {
             String teksNama = "%ajlb_lb_" + target + "_" + i + "_monthly_name%";
             String teksNilai = "%ajlb_lb_" + target + "_" + i + "_monthly_value%";
             
@@ -39,15 +36,12 @@ public class LeaderboardCommand implements CommandExecutor {
             String nilaiAsli = PlaceholderAPI.setPlaceholders(player, teksNilai);
 
             if (i == 1 || i == 2 || i == 3) {
-                player.sendMessage("§b" + i + ". §6" + namaAsli + " §7- §a" + nilaiAsli);
+                sender.sendMessage("§b" + i + ". §6" + namaAsli + " §7- §a" + nilaiAsli);
             } else {
-                player.sendMessage("§b" + i + ". §f" + namaAsli + " §7- §a" + nilaiAsli);
+                sender.sendMessage("§b" + i + ". §f" + namaAsli + " §7- §a" + nilaiAsli);
             }
 
         }
-        
-        player.sendMessage("§e========================");
-        player.sendMessage("");
 
         return true;
     }

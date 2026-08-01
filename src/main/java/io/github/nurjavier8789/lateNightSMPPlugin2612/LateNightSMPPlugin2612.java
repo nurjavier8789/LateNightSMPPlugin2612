@@ -41,6 +41,7 @@ public final class LateNightSMPPlugin2612 extends JavaPlugin implements Listener
         getServer().getPluginManager().registerEvents(new ElytraListener(this), this);
         getServer().getPluginManager().registerEvents(new FirstJoinListener(), this);
         getServer().getPluginManager().registerEvents(new LNSMPPEventListener(this), this);
+        getServer().getPluginManager().registerEvents(new EnchantListener(), this);
 
         getLogger().info("Late Night SMP Plugin is active!");
     }
