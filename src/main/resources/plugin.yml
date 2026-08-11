@@ -10,3 +10,6 @@ commands:
     description: Late Night SMP Plugin Command!
     permission: latenightsmpplugin
     aliases: [lnsmpp]
+  chat:
+    description: Send a chat to different channel!
+    usage: /chat <channel> [msg]

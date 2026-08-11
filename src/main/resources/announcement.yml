@@ -1,0 +1,7 @@
+# Annaouncement config for Server links!
+
+announcement:
+  status: true
+  customName: true
+  name: "📢 PENGUMUMAN: Event PVP Minggu Ini!"
+  url: "https://discord.com/channels/123/456"
